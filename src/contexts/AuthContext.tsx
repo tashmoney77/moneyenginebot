@@ -99,20 +99,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setUser(newUser);
           localStorage.setItem(existingUserKey, JSON.stringify(newUser));
         }
-            id: 'test-user-tash',
-            email,
-            name: name || 'Tash',
-            role: 'founder' as const,
-            tier: 'free' as const,
-            questionsAnswered: 0,
-            experimentsCreated: 0,
-            joinedAt: new Date().toISOString(),
-            lastLoginDate: today,
-            dailyLogins: [{ date: today, count: 1 }]
-          };
-          setUser(newUser);
-          localStorage.setItem(existingUserKey, JSON.stringify(newUser));
-        }
       } else {
         // Handle other users with persistence
         if (existingUserData) {
