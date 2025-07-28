@@ -131,10 +131,16 @@ const Chatbot: React.FC = () => {
   const generateSummary = (): string => {
     const firstName = user?.name?.split(' ')[0] || 'there';
     
+    console.log('🔍 Current userResponses array:', userResponses);
+    
     // Extract key insights from user responses
     const problemResponse = userResponses[0] || '';
     const competitionResponse = userResponses[1] || '';
     const businessModelResponse = userResponses[2] || '';
+    
+    console.log('📝 Problem Response:', problemResponse);
+    console.log('🏆 Competition Response:', competitionResponse);
+    console.log('💰 Business Model Response:', businessModelResponse);
     
     // Detect low-effort responses
     const detectLowEffortResponse = (response: string): boolean => {
@@ -356,8 +362,15 @@ ${firstName}, are you ready to take the next step in validating your startup?`;
       type: 'question'
     };
 
-    // Store user response for summary generation
-    setUserResponses(prev => [...prev, inputValue.trim()]);
+    // Store user response for summary generation - ensure we capture all responses
+    const currentQuestionIndex = messages.filter(m => m.sender === 'user').length;
+    setUserResponses(prev => {
+      const newResponses = [...prev];
+      newResponses[currentQuestionIndex] = inputValue.trim();
+      console.log('💾 Saving response for question', currentQuestionIndex + 1, ':', inputValue.trim());
+      return newResponses;
+    });
+    
     setMessages(prev => [...prev, userMessage]);
     
     // Clear autosaved input after successful send
@@ -386,6 +399,7 @@ ${firstName}, are you ready to take the next step in validating your startup?`;
       // Show summary after 3 questions for free users
       if (questionsAsked + 1 >= 3 && user?.tier === 'free') {
         setTimeout(() => {
+          console.log('📊 Generating summary with responses:', userResponses);
           const summaryContent = generateSummary();
           const summaryMessage: Message = {
             id: (Date.now() + 2).toString(),
