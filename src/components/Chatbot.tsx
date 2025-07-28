@@ -640,7 +640,6 @@ ${firstName}, are you ready to take the next step in validating your startup?`;
                     className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg flex items-center"
                   >
                     Upgrade to Pro
-                    <ArrowRight className="ml-2 h-4 w-4" />
                   </button>
                 </div>
               </div>
