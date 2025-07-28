@@ -217,7 +217,8 @@ Consider upgrading to Pro for unlimited coaching questions. We can work together
 
 Your startup journey is exciting - I'm here to help you succeed! 🎯
 
-Ready to upgrade? Click the "Upgrade to Pro" button below to continue with unlimited coaching.`;
+🚀 **Ready for More?**
+Click the "Upgrade to Pro" button below to continue with unlimited coaching questions and get access to experiment tracking, custom dashboards, and direct coaching support.`;
     }
 
      // Generate specific, actionable insights based on responses
@@ -354,26 +355,25 @@ Upgrade to Pro to get:
 
 ${firstName}, are you ready to take the next step in validating your startup?
 
-Ready to upgrade? Click the "Upgrade to Pro" button below to continue with unlimited coaching.`;
+🚀 **Ready for More?**
+Click the "Upgrade to Pro" button below to continue with unlimited coaching questions and get access to experiment tracking, custom dashboards, and direct coaching support.`;
   };
 
   const handleSendMessage = () => {
     if (!inputValue.trim() || !canAskQuestions) return;
 
-    // Capture the current response BEFORE any state updates
-    const currentQuestionIndex = messages.filter(m => m.sender === 'user').length;
-    const currentResponse = inputValue.trim();
+    // Get current question number (0, 1, or 2)
+    const questionNumber = messages.filter(m => m.sender === 'user').length;
+    const userResponse = inputValue.trim();
     
-    console.log('💾 Capturing response for question', currentQuestionIndex + 1, ':', currentResponse);
+    console.log('💾 Saving response for question', questionNumber + 1, ':', userResponse);
     
-    // Create updated responses array
-    const newResponses = [...userResponses];
-    newResponses[currentQuestionIndex] = currentResponse;
+    // Update responses array immediately
+    const updatedResponses = [...userResponses];
+    updatedResponses[questionNumber] = userResponse;
+    setUserResponses(updatedResponses);
     
-    console.log('📋 New responses array:', newResponses);
-    
-    // Update state with new responses
-    setUserResponses(newResponses);
+    console.log('📋 All responses so far:', updatedResponses);
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -409,10 +409,10 @@ Ready to upgrade? Click the "Upgrade to Pro" button below to continue with unlim
       }
 
       // Show summary after 3 questions for free users
-      if (questionsAsked + 1 >= 3 && user?.tier === 'free') {
+      if (questionNumber + 1 >= 3 && user?.tier === 'free') {
         setTimeout(() => {
-          console.log('📊 Generating summary with final responses:', newResponses);
-          const summaryContent = generateSummary(newResponses);
+          console.log('📊 Generating summary with final responses:', updatedResponses);
+          const summaryContent = generateSummary(updatedResponses);
           const summaryMessage: Message = {
             id: (Date.now() + 2).toString(),
             content: summaryContent,
