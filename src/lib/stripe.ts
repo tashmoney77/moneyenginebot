@@ -5,7 +5,7 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 
 
 export { stripePromise };
 
-const response = await fetch(`/.netlify/functions/create-checkout-session`, {
+export const createCheckoutSession = async (priceId: string, userId: string, userEmail: string) => {
   try {
     console.log('🚀 Starting checkout process...');
     console.log('📋 Request data:', { priceId, userId, userEmail });
