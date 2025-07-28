@@ -362,22 +362,22 @@ Upgrade to Pro for unlimited coaching questions and get access to experiment tra
   const handleSendMessage = () => {
     if (!inputValue.trim() || !canAskQuestions) return;
 
-    // Get current question number (0, 1, or 2) 
-    const currentQuestionIndex = messages.filter(m => m.sender === 'user').length;
-    const userResponseText = inputValue.trim();
+    // Get current question number (0, 1, or 2)
+    const questionIndex = messages.filter(m => m.sender === 'user').length;
+    const responseText = inputValue.trim();
     
-    console.log('💾 Capturing response for question', currentQuestionIndex + 1, ':', userResponseText);
+    console.log('💾 Capturing response for question', questionIndex + 1, ':', responseText);
     
-    // Create new responses array with the current response
-    const newResponsesArray = [...userResponses];
-    newResponsesArray[currentQuestionIndex] = userResponseText;
-    setUserResponses(newResponsesArray);
+    // Update responses array immediately
+    const updatedResponses = [...userResponses];
+    updatedResponses[questionIndex] = responseText;
+    setUserResponses(updatedResponses);
     
-    console.log('📋 Updated responses array:', newResponsesArray);
+    console.log('📋 Updated responses array:', updatedResponses);
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      content: userResponseText,
+      content: responseText,
       sender: 'user',
       timestamp: new Date().toISOString(),
       type: 'question'
@@ -394,7 +394,7 @@ Upgrade to Pro for unlimited coaching questions and get access to experiment tra
     setTimeout(() => {
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        content: generateBotResponse(userResponseText, currentControlledQuestionIndex),
+        content: generateBotResponse(responseText, currentControlledQuestionIndex),
         sender: 'bot',
         timestamp: new Date().toISOString(),
         type: 'response'
@@ -408,11 +408,11 @@ Upgrade to Pro for unlimited coaching questions and get access to experiment tra
         setCurrentControlledQuestionIndex(prev => prev + 1);
       }
 
-      // Show summary after 3 questions for free users  
-      if (currentQuestionIndex + 1 >= 3 && user?.tier === 'free') {
+      // Show summary after 3 questions for free users
+      if (questionIndex + 1 >= 3 && user?.tier === 'free') {
         setTimeout(() => {
-          console.log('📊 Generating summary with final responses:', newResponsesArray);
-          const summaryContent = generateSummary(newResponsesArray);
+          console.log('📊 Generating summary with final responses:', updatedResponses);
+          const summaryContent = generateSummary(updatedResponses);
           const summaryMessage: Message = {
             id: (Date.now() + 2).toString(),
             content: summaryContent,
