@@ -71,24 +71,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           joinedAt: '2024-01-01',
         });
       } else if (email === 'tash@moneyengine.co') {
-        // Preserve existing data for tash@moneyengine.co
+        // Load existing data for tash@moneyengine.co
+        let userData;
         if (existingUserData) {
           const savedData = JSON.parse(existingUserData);
-          // Update login tracking but preserve ALL other data including responses and summary
-          const updatedUser = {
+          console.log('🔍 Loading existing data for tash@moneyengine.co:', savedData);
+          // Preserve ALL existing data, just update login tracking
+          userData = {
             ...savedData,
             lastLoginDate: today,
-            dailyLogins: updateDailyLogins(savedData.dailyLogins || [], today),
-            // Ensure we don't overwrite any existing data
-            questionsAnswered: savedData.questionsAnswered || 0,
-            summary: savedData.summary,
-            summaryDate: savedData.summaryDate
+            dailyLogins: updateDailyLogins(savedData.dailyLogins || [], today)
           };
-          setUser(updatedUser);
-          localStorage.setItem(existingUserKey, JSON.stringify(updatedUser));
         } else {
-          // First time login for Tash - create with some test data
-          const newUser = {
+          console.log('🆕 Creating new user data for tash@moneyengine.co');
+          // First time login - create new user
+          userData = {
             id: 'test-user-tash',
             email,
             name: name || 'Tash',
@@ -100,9 +97,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             lastLoginDate: today,
             dailyLogins: [{ date: today, count: 1 }]
           };
-          setUser(newUser);
-          localStorage.setItem(existingUserKey, JSON.stringify(newUser));
         }
+        console.log('💾 Setting user data for tash@moneyengine.co:', userData);
+        setUser(userData);
+        localStorage.setItem(existingUserKey, JSON.stringify(userData));
       } else {
         // Handle other users with persistence
         if (existingUserData) {
@@ -157,14 +155,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(prev => {
       if (!prev) return null;
       const updatedUser = { ...prev, ...updates };
-      // Save updated user data to both locations
-      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-      localStorage.setItem(`user_${prev.email}`, JSON.stringify(updatedUser));
       
-      // Debug logging for tash@moneyengine.co
+      // Save updated user data to both locations
+      const userKey = `user_${prev.email}`;
+      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+      localStorage.setItem(userKey, JSON.stringify(updatedUser));
+      
+      // Enhanced debug logging for tash@moneyengine.co
       if (prev.email === 'tash@moneyengine.co') {
-        console.log('💾 Saving data for tash@moneyengine.co:', updatedUser);
-        console.log('🔑 Storage key:', `user_${prev.email}`);
+        console.log('💾 UPDATING USER DATA for tash@moneyengine.co');
+        console.log('🔑 Storage key:', userKey);
+        console.log('📊 Updated data:', updatedUser);
+        console.log('✅ Saved to localStorage');
       }
       
       return updatedUser;
