@@ -7,7 +7,9 @@ export { stripePromise };
 
 export const createCheckoutSession = async (priceId: string, userId: string, userEmail: string) => {
   try {
-    console.log('Calling Netlify function with:', { priceId, userId, userEmail });
+    console.log('🚀 Starting checkout process...');
+    console.log('📋 Request data:', { priceId, userId, userEmail });
+    console.log('🌐 Function URL:', '/.netlify/functions/create-checkout-session');
     
     const response = await fetch('/.netlify/functions/create-checkout-session', {
       method: 'POST',
@@ -23,24 +25,33 @@ export const createCheckoutSession = async (priceId: string, userId: string, use
       }),
     });
 
+    console.log('📡 Response status:', response.status);
+    console.log('📡 Response ok:', response.ok);
+
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Response error:', response.status, errorText);
-      throw new Error('Failed to create checkout session');
+      console.error('❌ Response error:', response.status, errorText);
+      throw new Error(`Checkout failed: ${response.status} - ${errorText}`);
     }
 
     const { sessionId } = await response.json();
+    console.log('✅ Session created:', sessionId);
     
     const stripe = await stripePromise;
-    if (!stripe) throw new Error('Stripe failed to initialize');
+    if (!stripe) {
+      console.error('❌ Stripe failed to initialize');
+      throw new Error('Stripe failed to initialize');
+    }
 
+    console.log('🔄 Redirecting to Stripe checkout...');
     const { error } = await stripe.redirectToCheckout({ sessionId });
     
     if (error) {
+      console.error('❌ Stripe redirect error:', error);
       throw error;
     }
   } catch (error) {
-    console.error('Error creating checkout session:', error);
+    console.error('💥 Checkout error:', error);
     throw error;
   }
 };
