@@ -1,9 +1,8 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.handler = async (event, context) => {
-  console.log('Function called with method:', event.httpMethod);
-  console.log('Environment check - STRIPE_SECRET_KEY exists:', !!process.env.STRIPE_SECRET_KEY);
-  console.log('STRIPE_SECRET_KEY value:', process.env.STRIPE_SECRET_KEY ? 'sk_test_...' : 'MISSING');
+  console.log('✅ Function called with method:', event.httpMethod);
+  console.log('🔑 Environment check - STRIPE_SECRET_KEY exists:', !!process.env.STRIPE_SECRET_KEY);
   
   // Enable CORS
   const headers = {
@@ -32,16 +31,7 @@ exports.handler = async (event, context) => {
   try {
     const { priceId, userId, userEmail, successUrl, cancelUrl } = JSON.parse(event.body);
     
-    console.log('Creating session with:', { priceId, userId, userEmail });
-
-    // Check if Stripe is properly initialized
-    if (!process.env.STRIPE_SECRET_KEY) {
-      throw new Error('STRIPE_SECRET_KEY environment variable is not set');
-    }
-
-    if (!process.env.STRIPE_SECRET_KEY.startsWith('sk_')) {
-      throw new Error('Invalid STRIPE_SECRET_KEY format');
-    }
+    console.log('💳 Creating session with:', { priceId, userId, userEmail });
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
