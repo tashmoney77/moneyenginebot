@@ -218,7 +218,9 @@ Consider upgrading to Pro for unlimited coaching questions. We can work together
 Your startup journey is exciting - I'm here to help you succeed! 🎯
 
 🚀 **Ready for More?**
-Upgrade to Pro for unlimited coaching questions and get access to experiment tracking, custom dashboards, and direct coaching support.`;
+Upgrade to Pro for unlimited coaching questions and get access to experiment tracking, custom dashboards, and direct coaching support.
+
+Ready to take the next step? Click the "Upgrade to Pro" button below to get unlimited coaching questions and advanced features.`;
     }
 
      // Generate specific, actionable insights based on responses
@@ -356,7 +358,9 @@ Upgrade to Pro to get:
 ${firstName}, are you ready to take the next step in validating your startup?
 
 🚀 **Ready for More?**
-Upgrade to Pro for unlimited coaching questions and get access to experiment tracking, custom dashboards, and direct coaching support.`;
+Upgrade to Pro for unlimited coaching questions and get access to experiment tracking, custom dashboards, and direct coaching support.
+
+Ready to take the next step? Click the "Upgrade to Pro" button below to get unlimited coaching questions and advanced features.`;
   };
 
   const handleSendMessage = () => {
