@@ -71,10 +71,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           joinedAt: '2024-01-01',
         });
       } else if (email === 'tash@moneyengine.co') {
-        // Preserve existing data for tash@moneyengine.co
+        // Always preserve existing data for tash@moneyengine.co
         if (existingUserData) {
           const savedData = JSON.parse(existingUserData);
-          // Update login tracking
+          // Update login tracking but preserve all other data
           const updatedUser = {
             ...savedData,
             lastLoginDate: today,
@@ -83,7 +83,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setUser(updatedUser);
           localStorage.setItem(existingUserKey, JSON.stringify(updatedUser));
         } else {
-          // First time login for Tash
+          // First time login for Tash - create with some test data
           const newUser = {
             id: 'test-user-tash',
             email,
