@@ -170,7 +170,7 @@ ${businessModelResponse || 'No response provided'}
 
 💡 **Getting More Value:**
 
-I can provide much more specific and actionable advice when I understand the details of your unique situation.
+I'd love to give you more specific and actionable advice! When I understand more details about your unique situation, I can provide much better insights.
 
 📋 **For Even Better Insights, Consider Sharing:**
 
@@ -200,14 +200,14 @@ I can provide much more specific and actionable advice when I understand the det
 3. **Use the Templates** to structure your customer research
 
 📞 **Let's Dive Deeper:**
-Book a free 15-minute strategy call where we can dive deep into your specific situation:
+I'd love to chat more about your startup! Book a free 15-minute strategy call:
 
 **📞 [Schedule Your Free 15-Min Strategy Call →](https://calendly.com/tashmoney/moneyenginebot)**
 
 💪 **Ready for More?**
-Upgrade to Pro to get unlimited coaching questions and work together to build a validation plan that fits your specific startup.
+Consider upgrading to Pro for unlimited coaching questions. We can work together to build a validation plan that fits your specific startup.
 
-Your startup has potential - let's unlock it together! 🎯`;
+Your startup journey is exciting - I'm here to help you succeed! 🎯`;
     }
 
      // Generate specific, actionable insights based on responses
