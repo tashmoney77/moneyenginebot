@@ -129,20 +129,20 @@ const Chatbot: React.FC = () => {
   };
 
   const generateSummary = (responses?: string[]): string => {
-    // Use passed responses or current state
-    const currentResponses = responses || userResponses;
+    // Use passed responses array
+    const currentResponses = responses || [];
     const firstName = user?.name?.split(' ')[0] || 'there';
     
-    console.log('🔍 Current responses array:', currentResponses);
+    console.log('🔍 Summary generation - responses received:', currentResponses);
     
     // Extract key insights from user responses
     const problemResponse = currentResponses[0] || '';
     const competitionResponse = currentResponses[1] || '';
     const businessModelResponse = currentResponses[2] || '';
     
-    console.log('📝 Problem Response:', problemResponse);
-    console.log('🏆 Competition Response:', competitionResponse);
-    console.log('💰 Business Model Response:', businessModelResponse);
+    console.log('📝 Problem Response (index 0):', problemResponse);
+    console.log('🏆 Competition Response (index 1):', competitionResponse);
+    console.log('💰 Business Model Response (index 2):', businessModelResponse);
     
     // Detect low-effort responses
     const detectLowEffortResponse = (response: string): boolean => {
@@ -358,15 +358,17 @@ ${firstName}, are you ready to take the next step in validating your startup?`;
 
     // Get the current question index BEFORE adding the new message
     const currentQuestionIndex = messages.filter(m => m.sender === 'user').length;
+    const currentResponse = inputValue.trim();
     
-    // Store user response immediately
-    setUserResponses(prev => {
-      const newResponses = [...prev];
-      newResponses[currentQuestionIndex] = inputValue.trim();
-      console.log('💾 Saving response for question', currentQuestionIndex + 1, ':', inputValue.trim());
-      console.log('📋 All responses so far:', newResponses);
-      return newResponses;
-    });
+    console.log('💾 Capturing response for question', currentQuestionIndex + 1, ':', currentResponse);
+    
+    // Update responses array immediately
+    const updatedResponses = [...userResponses];
+    updatedResponses[currentQuestionIndex] = currentResponse;
+    setUserResponses(updatedResponses);
+    
+    console.log('📋 Updated responses array:', updatedResponses);
+
     const userMessage: Message = {
       id: Date.now().toString(),
       content: inputValue.trim(),
@@ -403,32 +405,27 @@ ${firstName}, are you ready to take the next step in validating your startup?`;
       // Show summary after 3 questions for free users
       if (questionsAsked + 1 >= 3 && user?.tier === 'free') {
         setTimeout(() => {
-          // Get the latest responses from state
-          setUserResponses(currentResponses => {
-            console.log('📊 Generating summary with responses:', currentResponses);
-            const summaryContent = generateSummary(currentResponses);
-            const summaryMessage: Message = {
-              id: (Date.now() + 2).toString(),
-              content: summaryContent,
-              sender: 'bot',
-              timestamp: new Date().toISOString(),
-              type: 'summary'
-            };
-            setShowSummary(true);
-            setMessages(prev => [...prev, summaryMessage]);
-            
-            // Save summary to user profile
-            updateUser({ 
-              summary: summaryContent, 
-              summaryDate: new Date().toISOString(),
-              questionsAnswered: 3
-            });
-            
-            // Send email copy to user and admin
-            sendSummaryEmails(summaryContent);
-            
-            return currentResponses; // Return unchanged
+          console.log('📊 Generating summary with final responses:', updatedResponses);
+          const summaryContent = generateSummary(updatedResponses);
+          const summaryMessage: Message = {
+            id: (Date.now() + 2).toString(),
+            content: summaryContent,
+            sender: 'bot',
+            timestamp: new Date().toISOString(),
+            type: 'summary'
+          };
+          setShowSummary(true);
+          setMessages(prev => [...prev, summaryMessage]);
+          
+          // Save summary to user profile
+          updateUser({ 
+            summary: summaryContent, 
+            summaryDate: new Date().toISOString(),
+            questionsAnswered: 3
           });
+          
+          // Send email copy to user and admin
+          sendSummaryEmails(summaryContent);
         }, 1000);
       }
       
