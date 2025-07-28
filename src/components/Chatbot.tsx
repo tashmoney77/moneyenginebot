@@ -153,9 +153,9 @@ const Chatbot: React.FC = () => {
     const hasLowEffortResponses = [problemResponse, competitionResponse, businessModelResponse]
       .some(response => detectLowEffortResponse(response));
 
-    // If low-effort responses detected, provide feedback instead of analysis
+    // If low-effort responses detected, provide gentle feedback instead of analysis
     if (hasLowEffortResponses) {
-      return `Hi ${firstName}! I noticed your responses were quite brief. To provide you with valuable, personalized insights, I need more detailed information about your startup.
+      return `Hi ${firstName}! Thanks for completing the three foundational questions. I'd love to provide you with more detailed, personalized insights about your startup.
 
 🎯 **Your Current Responses:**
 
@@ -168,11 +168,11 @@ ${competitionResponse || 'No response provided'}
 **Business Model & Revenue Strategy:**
 ${businessModelResponse || 'No response provided'}
 
-⚠️ **Why Detailed Responses Matter:**
+💡 **Getting More Value:**
 
-The quality of insights you receive is directly proportional to the detail you provide. Generic or test responses result in generic advice that won't help your specific situation.
+I can provide much more specific and actionable advice when I understand the details of your unique situation.
 
-🔄 **To Get Maximum Value:**
+📋 **For Even Better Insights, Consider Sharing:**
 
 **For Problem Discovery, I need to know:**
 • Who specifically has this problem? (demographics, job titles, company size)
@@ -193,21 +193,21 @@ The quality of insights you receive is directly proportional to the detail you p
 • What's your target price point and why?
 • How will you acquire customers?
 
-💡 **Next Steps:**
+🚀 **Next Steps:**
 
-1. **Upgrade to Pro** for unlimited questions and re-engage with detailed responses
-2. **Book a Strategy Call** to discuss your startup in depth with a human coach
-3. **Use the Templates** to structure your thinking before answering
+1. **Book a Strategy Call** to discuss your startup in depth with a human coach
+2. **Upgrade to Pro** for unlimited questions and deeper analysis
+3. **Use the Templates** to structure your customer research
 
-📞 **Ready for Real Insights?**
+📞 **Let's Dive Deeper:**
 Book a free 15-minute strategy call where we can dive deep into your specific situation:
 
 **📞 [Schedule Your Free 15-Min Strategy Call →](https://calendly.com/tashmoney/moneyenginebot)**
 
-🚀 **Want to Try Again?**
-Upgrade to Pro to get unlimited coaching questions and provide the detailed responses that will unlock truly personalized insights for your startup.
+💪 **Ready for More?**
+Upgrade to Pro to get unlimited coaching questions and work together to build a validation plan that fits your specific startup.
 
-Remember: The entrepreneurs who succeed are the ones who take the validation process seriously. Your startup deserves better than test responses! 💪`;
+Your startup has potential - let's unlock it together! 🎯`;
     }
 
      // Generate specific, actionable insights based on responses
