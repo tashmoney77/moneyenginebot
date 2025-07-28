@@ -54,6 +54,9 @@ const UpgradeModal: React.FC<UpgradeModalProps> = ({ isOpen, onClose }) => {
     setIsLoading(true);
     try {
       console.log('🎯 Starting upgrade process for:', planType);
+      console.log('🔑 Using price ID:', plans[planType].priceId);
+      console.log('👤 User info:', { id: user.id, email: user.email });
+      
       await createCheckoutSession(
         plans[planType].priceId,
         user.id,
@@ -68,14 +71,15 @@ const UpgradeModal: React.FC<UpgradeModalProps> = ({ isOpen, onClose }) => {
       if (error.message.includes('STRIPE_SECRET_KEY')) {
         errorMessage += 'Payment system not configured. Please contact support.';
       } else if (error.message.includes('404')) {
-        errorMessage += 'Payment function not found. Please contact support.';
+        errorMessage += 'Function URL issue. Checking logs...';
       } else if (error.message.includes('500')) {
         errorMessage += 'Server error. Please try again or contact support.';
       } else {
         errorMessage += 'Please try again or contact support.';
       }
       
-      alert(errorMessage + '\n\nError details: ' + error.message);
+      console.error('Full error details:', error);
+      alert(errorMessage + '\n\nCheck console for details.');
     } finally {
       setIsLoading(false);
     }
