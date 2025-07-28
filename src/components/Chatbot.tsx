@@ -218,7 +218,7 @@ Consider upgrading to Pro for unlimited coaching questions. We can work together
 Your startup journey is exciting - I'm here to help you succeed! 🎯
 
 🚀 **Ready for More?**
-Click the "Upgrade to Pro" button below to continue with unlimited coaching questions and get access to experiment tracking, custom dashboards, and direct coaching support.`;
+Upgrade to Pro for unlimited coaching questions and get access to experiment tracking, custom dashboards, and direct coaching support.`;
     }
 
      // Generate specific, actionable insights based on responses
@@ -356,28 +356,28 @@ Upgrade to Pro to get:
 ${firstName}, are you ready to take the next step in validating your startup?
 
 🚀 **Ready for More?**
-Click the "Upgrade to Pro" button below to continue with unlimited coaching questions and get access to experiment tracking, custom dashboards, and direct coaching support.`;
+Upgrade to Pro for unlimited coaching questions and get access to experiment tracking, custom dashboards, and direct coaching support.`;
   };
 
   const handleSendMessage = () => {
     if (!inputValue.trim() || !canAskQuestions) return;
 
-    // Get current question number (0, 1, or 2)
-    const questionNumber = messages.filter(m => m.sender === 'user').length;
-    const userResponse = inputValue.trim();
+    // Get current question number (0, 1, or 2) 
+    const currentQuestionIndex = messages.filter(m => m.sender === 'user').length;
+    const userResponseText = inputValue.trim();
     
-    console.log('💾 Saving response for question', questionNumber + 1, ':', userResponse);
+    console.log('💾 Capturing response for question', currentQuestionIndex + 1, ':', userResponseText);
     
-    // Update responses array immediately
-    const updatedResponses = [...userResponses];
-    updatedResponses[questionNumber] = userResponse;
-    setUserResponses(updatedResponses);
+    // Create new responses array with the current response
+    const newResponsesArray = [...userResponses];
+    newResponsesArray[currentQuestionIndex] = userResponseText;
+    setUserResponses(newResponsesArray);
     
-    console.log('📋 All responses so far:', updatedResponses);
+    console.log('📋 Updated responses array:', newResponsesArray);
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      content: inputValue.trim(),
+      content: userResponseText,
       sender: 'user',
       timestamp: new Date().toISOString(),
       type: 'question'
@@ -394,7 +394,7 @@ Click the "Upgrade to Pro" button below to continue with unlimited coaching ques
     setTimeout(() => {
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        content: generateBotResponse(inputValue, currentControlledQuestionIndex),
+        content: generateBotResponse(userResponseText, currentControlledQuestionIndex),
         sender: 'bot',
         timestamp: new Date().toISOString(),
         type: 'response'
@@ -408,11 +408,11 @@ Click the "Upgrade to Pro" button below to continue with unlimited coaching ques
         setCurrentControlledQuestionIndex(prev => prev + 1);
       }
 
-      // Show summary after 3 questions for free users
-      if (questionNumber + 1 >= 3 && user?.tier === 'free') {
+      // Show summary after 3 questions for free users  
+      if (currentQuestionIndex + 1 >= 3 && user?.tier === 'free') {
         setTimeout(() => {
-          console.log('📊 Generating summary with final responses:', updatedResponses);
-          const summaryContent = generateSummary(updatedResponses);
+          console.log('📊 Generating summary with final responses:', newResponsesArray);
+          const summaryContent = generateSummary(newResponsesArray);
           const summaryMessage: Message = {
             id: (Date.now() + 2).toString(),
             content: summaryContent,
@@ -643,7 +643,7 @@ Click the "Upgrade to Pro" button below to continue with unlimited coaching ques
                   </button>
                   <button
                     onClick={() => setShowUpgradeModal(true)}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg flex items-center"
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg"
                   >
                     Upgrade to Pro
                   </button>
