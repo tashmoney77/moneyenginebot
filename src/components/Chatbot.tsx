@@ -352,7 +352,9 @@ Upgrade to Pro to get:
 • Real-time validation tracking dashboard
 • Direct access to Tash for strategic guidance
 
-${firstName}, are you ready to take the next step in validating your startup?`;
+${firstName}, are you ready to take the next step in validating your startup?
+
+Ready to upgrade? Click the "Upgrade to Pro" button below to continue with unlimited coaching.`;
   };
 
   const handleSendMessage = () => {
