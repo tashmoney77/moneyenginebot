@@ -9,9 +9,12 @@ export const createCheckoutSession = async (priceId: string, userId: string, use
   try {
     console.log('🚀 Starting checkout process...');
     console.log('📋 Request data:', { priceId, userId, userEmail });
-    console.log('🌐 Function URL:', `${window.location.origin}/.netlify/functions/create-checkout-session`);
     
-    const response = await fetch(`${window.location.origin}/.netlify/functions/create-checkout-session`, {
+    const functionUrl = `${window.location.origin}/.netlify/functions/create-checkout-session`;
+    console.log('🌐 Function URL:', functionUrl);
+    console.log('🌐 Current origin:', window.location.origin);
+    
+    const response = await fetch(functionUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
