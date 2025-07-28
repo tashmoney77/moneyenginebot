@@ -215,7 +215,9 @@ I'd love to chat more about your startup! Book a free 15-minute strategy call:
 💪 **Ready for More?**
 Consider upgrading to Pro for unlimited coaching questions. We can work together to build a validation plan that fits your specific startup.
 
-Your startup journey is exciting - I'm here to help you succeed! 🎯`;
+Your startup journey is exciting - I'm here to help you succeed! 🎯
+
+Ready to upgrade? Click the "Upgrade to Pro" button below to continue with unlimited coaching.`;
     }
 
      // Generate specific, actionable insights based on responses
@@ -356,18 +358,20 @@ ${firstName}, are you ready to take the next step in validating your startup?`;
   const handleSendMessage = () => {
     if (!inputValue.trim() || !canAskQuestions) return;
 
-    // Get the current question index BEFORE adding the new message
+    // Capture the current response BEFORE any state updates
     const currentQuestionIndex = messages.filter(m => m.sender === 'user').length;
     const currentResponse = inputValue.trim();
     
     console.log('💾 Capturing response for question', currentQuestionIndex + 1, ':', currentResponse);
     
-    // Update responses array immediately
-    const updatedResponses = [...userResponses];
-    updatedResponses[currentQuestionIndex] = currentResponse;
-    setUserResponses(updatedResponses);
+    // Create updated responses array
+    const newResponses = [...userResponses];
+    newResponses[currentQuestionIndex] = currentResponse;
     
-    console.log('📋 Updated responses array:', updatedResponses);
+    console.log('📋 New responses array:', newResponses);
+    
+    // Update state with new responses
+    setUserResponses(newResponses);
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -405,8 +409,8 @@ ${firstName}, are you ready to take the next step in validating your startup?`;
       // Show summary after 3 questions for free users
       if (questionsAsked + 1 >= 3 && user?.tier === 'free') {
         setTimeout(() => {
-          console.log('📊 Generating summary with final responses:', updatedResponses);
-          const summaryContent = generateSummary(updatedResponses);
+          console.log('📊 Generating summary with final responses:', newResponses);
+          const summaryContent = generateSummary(newResponses);
           const summaryMessage: Message = {
             id: (Date.now() + 2).toString(),
             content: summaryContent,
